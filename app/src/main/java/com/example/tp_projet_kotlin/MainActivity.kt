@@ -12,6 +12,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private val url = "http://s519716619.onlinehome.fr/exchange/madrental/images/"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,8 +37,8 @@ class MainActivity : AppCompatActivity() {
                     val allCar = response.body()
                     if (allCar != null) {
                         for (c in allCar) {
-                            listeVoitures.add(Voiture(c.nom, c.prixjournalierbase.toString(), c.categorieco2))
-
+                            listeVoitures.add(Voiture(c.nom, c.prixjournalierbase.toString(), c.categorieco2, url+c.image))
+                            Log.d("tag", "${c.image}")
                             // adapter :
                             val voituresAdapter = VoituresAdapter(listeVoitures)
                             liste_voitures.adapter = voituresAdapter
