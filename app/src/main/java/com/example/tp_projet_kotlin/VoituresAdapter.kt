@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class VoituresAdapter (private var listeVoitures: MutableList<Voiture>) :
+class VoituresAdapter (private var listeVoitures: MutableList<Voiture>,
+                       private val listener : OnItemClickListener) :
     RecyclerView.Adapter<VoituresAdapter.VoitureViewHolder>()
     {
     // Crée chaque vue item à afficher :
@@ -31,12 +32,27 @@ class VoituresAdapter (private var listeVoitures: MutableList<Voiture>) :
     override fun getItemCount(): Int = listeVoitures.size
 
     // ViewHolder :
-    inner class VoitureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-    {
+    inner class VoitureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    View.OnClickListener {
         val textViewLibelleVoiture: TextView = itemView.findViewById(R.id.libelle_voiture)
         val textViewPriceVoiture: TextView = itemView.findViewById(R.id.price_voiture)
         val textViewCategoryVoiture: TextView = itemView.findViewById(R.id.category_voiture)
         val imageViewUrlVoiture : ImageView = itemView.findViewById(R.id.image_voiture)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
     }
+
+        interface OnItemClickListener {
+            fun onItemClick(position: Int)
+        }
 
 }
