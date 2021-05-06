@@ -1,14 +1,18 @@
 package com.example.tp_projet_kotlin
 
+import android.R.attr.button
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
+
 
 class VoitureFragment : Fragment()
 {
@@ -23,6 +27,7 @@ class VoitureFragment : Fragment()
         val textViewPriceVoiture: TextView = v.findViewById(R.id.price_voiture_fragment)
         val textViewCategoryVoiture: TextView = v.findViewById(R.id.category_voiture_fragment)
         val imageViewUrlVoiture : ImageView = v.findViewById(R.id.image_voiture_fragment)
+        val buttonView : Button = v.findViewById(R.id.addFavori)
 
         val name = arguments?.getString("name")
         val price = arguments?.getString("price")
@@ -45,6 +50,19 @@ class VoitureFragment : Fragment()
         image?.let {
             Picasso.get().load(image).into(imageViewUrlVoiture);
         }
+
+        buttonView.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?)
+            {
+                val voiture = VoitureDTO()
+                voiture.name = name
+                voiture.price = price?.toInt()
+                voiture.category = category
+                voiture.image = image
+
+                AppDatabaseHelper.getDatabase(context).voitureDAO().insert(voiture)
+            }
+        })
 
         return v
     }
