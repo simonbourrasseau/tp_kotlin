@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(), VoituresAdapter.OnItemClickListener {
     private val listeVoitures: MutableList<Voiture> = ArrayList()
     private val voituresAdapter = VoituresAdapter(listeVoitures, this)
 
+    private val fragment = VoitureFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -54,6 +56,8 @@ class MainActivity : AppCompatActivity(), VoituresAdapter.OnItemClickListener {
                 }
             })
         }
+
+
     }
 
     override fun onItemClick(position: Int) {
@@ -68,12 +72,15 @@ class MainActivity : AppCompatActivity(), VoituresAdapter.OnItemClickListener {
         bundle.putString("price", price)
         bundle.putString("category", category)
         bundle.putString("image", image)
-        val fragment = VoitureFragment()
         fragment.arguments = bundle
 
         // transaction :
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment1, fragment, "exemple2")
-        transaction.commit()
+
+        transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+        .add(R.id.fragment1, fragment, "exemple2")
+        .addToBackStack(null)
+        .commit()
+
     }
 }
