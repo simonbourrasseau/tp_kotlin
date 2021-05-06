@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso
 
 class VoitureFragment : Fragment()
 {
+    private var isAlreadyInFavorite : Int = 0
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
@@ -51,19 +53,42 @@ class VoitureFragment : Fragment()
             Picasso.get().load(image).into(imageViewUrlVoiture);
         }
 
+        //verifie si il n'est pas déjà dans des favori
+        verifIfAlreadyInFavorite(name.toString(), buttonView, context)
+
         buttonView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?)
             {
-                val voiture = VoitureDTO()
-                voiture.name = name
-                voiture.price = price?.toInt()
-                voiture.category = category
-                voiture.image = image
+                var voiture = VoitureDTO()
 
-                AppDatabaseHelper.getDatabase(context).voitureDAO().insert(voiture)
+                if(isAlreadyInFavorite == 0) {
+                    voiture.name = name
+                    voiture.price = price?.toInt()
+                    voiture.category = category
+                    voiture.image = image
+
+                    AppDatabaseHelper.getDatabase(context).voitureDAO().insert(voiture)
+                }else{
+                    Log.d("hoy", "kio")
+                    voiture = AppDatabaseHelper.getDatabase(context).voitureDAO().getVoitureParName(name.toString())
+                    AppDatabaseHelper.getDatabase(context).voitureDAO().delete(voiture)
+                }
+
+                verifIfAlreadyInFavorite(name.toString(), buttonView, context)
             }
         })
 
         return v
+    }
+
+    fun verifIfAlreadyInFavorite(name : String, buttonView : Button, context : AppCompatActivity){
+        val voitureAlreadyInFavorite = AppDatabaseHelper.getDatabase(context).voitureDAO().countVoituresParName(name).toString()
+        if(voitureAlreadyInFavorite == "0"){
+            buttonView.text = "Ajouter aux favoris"
+            isAlreadyInFavorite = 0
+        }else{
+            buttonView.text = "Retirer des favoris"
+            isAlreadyInFavorite = 1
+        }
     }
 }

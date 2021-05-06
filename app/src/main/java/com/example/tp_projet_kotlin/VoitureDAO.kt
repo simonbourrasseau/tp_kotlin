@@ -12,7 +12,7 @@ abstract class VoitureDAO {
     abstract fun countVoituresParName(name: String): Long
 
     @Query("SELECT * FROM voitures WHERE name = :name")
-    abstract fun getVoitureParName(name: String): Long
+    abstract fun getVoitureParName(name: String): VoitureDTO
 
     @Insert
     abstract fun insert(vararg voitures: VoitureDTO)
