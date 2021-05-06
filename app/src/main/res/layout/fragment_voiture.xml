@@ -27,7 +27,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="37dp"
+            android:layout_height="10dp"
             android:layout_weight="0" />
 
         <LinearLayout
@@ -89,6 +89,18 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0" />
+
+        <Button
+            android:id="@+id/addFavori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Ajouter au favori" />
 
     </LinearLayout>
 
