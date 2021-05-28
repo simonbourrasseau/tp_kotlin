@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), VoituresAdapter.OnItemClickListener {
     private val listeVoituresWGet: MutableList<Voiture> = ArrayList()
     private val voituresAdapter = VoituresAdapter(listeVoitures, this)
 
-    private val fragment = VoitureFragment()
+    private var fragment = VoitureFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +97,11 @@ class MainActivity : AppCompatActivity(), VoituresAdapter.OnItemClickListener {
 
     fun changefragment(name : String, price : String, category : String, image : String){
         // fragment :
+        if(fragment.isAdded())
+        {
+            fragment = VoitureFragment();
+        }
+
         val bundle = Bundle()
         bundle.putString("name", name)
         bundle.putString("price", price)
